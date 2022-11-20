@@ -17,13 +17,13 @@ class Home extends Component {
     super()
     this.state={
       allPosts:[],
+      loading: true
     }
   }
 
   componentDidMount(){
     db.collection('posts')
     .orderBy('createdAt', 'desc')
-    .limit(10)
     .onSnapshot(docs => {
       let publicaciones = []
       docs.forEach(doc => {
@@ -33,8 +33,10 @@ class Home extends Component {
         })
       })
 
+
     this.setState({
-      allPosts: publicaciones
+      allPosts: publicaciones,
+      loading: false
     })
 
     })
@@ -43,15 +45,20 @@ class Home extends Component {
   render(){
     return (
       <>
-
         <View style={styles.container3}>
-          {/* <FlatList
+          {!this.state.loading ? 
+          <>
+          <FlatList
             style={styles.container2}
             data={this.state.allPosts}
-            keyExtractor={item => item.id.toString()}
-            renderItem={({item}) => <Post style={styles.post} navigation={this.props.navigation} id={item.id} data={item.data} />}
-          /> */}
-          
+            keyExtractor={item => item.id}
+            renderItem={({item}) => <Post id={item.id} data={item.data} />}
+          />
+          <View>
+            <Text>Cantidad de Posts: {this.state.allPosts.length}</Text>
+          </View>
+          </>
+          : <Text>loading</Text>}
         </View>
       </>
     )

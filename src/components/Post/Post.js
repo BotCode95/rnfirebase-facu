@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native'
 import React, { Component } from 'react'
 import {FontAwesome} from '@expo/vector-icons'
 import {db, auth} from '../../firebase/config'
@@ -56,14 +56,25 @@ class Post extends Component {
         })
       })
       .catch(e => console.log(e))
+    
+    
+    }
+    deletePost() {
+      db.collection('posts').doc(this.props.id).delete()
+      // db.collection('posts').where('id','==',this.props.id)
+      // .get().then((querySnapshot) => {
+      //   console.log("query", querySnapshot)
+      //   querySnapshot.forEach((doc)  =>{
+      //     doc.ref.delete().then(() => {console.log("Documento Eliminado!")})
+      //   });
+      // }).catch(e => console.log(e));
     }
     
 
   render() {
-    console.log(this.props)
     return (
       <View style={styles.post}>
-        <TouchableOpacity onPress={()=> this.props.navigation.navigate(
+         <TouchableOpacity  onPress={()=> this.props.navigation.navigate(
           'Feed',
           {
             screen: 'FriendProfile',
@@ -71,14 +82,15 @@ class Post extends Component {
               email:this.props.data.owner
             }
           }
-        )}>
-          <Text style={styles.owner} >{this.props.data.owner}</Text>
+        )}> 
+        
+          <Text>{this.props.data.owner}</Text>
         </TouchableOpacity>
         <Text>{this.props.username}</Text>
-        <Image style={styles.image} source={this.props.data.photo} resizeMode={'contain'}/>
+        <Image source={this.props.data.photo} resizeMode={'contain'}/>
 
-        <View style={styles.datosPost}>
-        <Text style={styles.tituloPost} >{this.props.data.description}</Text>
+        <View >
+        <Text  >{this.props.data.description}</Text>
         <View>
         <Text>{this.state.likesCount}</Text> 
         <Text>{new Date(this.props.data.createdAt).toDateString()}</Text> 
@@ -103,7 +115,7 @@ class Post extends Component {
             <Text>Agregar comentario</Text>
           </TouchableOpacity>
         </View>
-        
+        <TouchableOpacity onPress={() => this.deletePost()}><Text>Eliminar Post</Text></TouchableOpacity>
       </View>
       </View>
     )
@@ -141,7 +153,6 @@ const styles = StyleSheet.create({
   owner:{
     fontWeight: 'bold',
     fontSize: '16px',
-    backgroundColor: '',
     textAlign: 'center',
     marginTop: 15
   },

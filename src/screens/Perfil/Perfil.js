@@ -4,7 +4,6 @@ import { auth, db } from '../../firebase/config'
 
 class Perfil extends Component {
   constructor(props){
-    console.log(props)
     super(props)
     this.state ={
       user: {}
