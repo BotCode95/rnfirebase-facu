@@ -61,13 +61,6 @@ class Post extends Component {
     }
     deletePost() {
       db.collection('posts').doc(this.props.id).delete()
-      // db.collection('posts').where('id','==',this.props.id)
-      // .get().then((querySnapshot) => {
-      //   console.log("query", querySnapshot)
-      //   querySnapshot.forEach((doc)  =>{
-      //     doc.ref.delete().then(() => {console.log("Documento Eliminado!")})
-      //   });
-      // }).catch(e => console.log(e));
     }
     
 
