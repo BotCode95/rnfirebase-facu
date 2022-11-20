@@ -24,6 +24,7 @@ class Home extends Component {
   componentDidMount(){
     db.collection('posts')
     .orderBy('createdAt', 'desc')
+    .limit(10)
     .onSnapshot(docs => {
       let publicaciones = []
       docs.forEach(doc => {
